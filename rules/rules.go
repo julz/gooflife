@@ -2,13 +2,9 @@ package rules
 
 import "github.com/julz/gooflife/state"
 
-type RuleSet []CellRuleFunc
+type RuleSet []state.CellRuleFunc
 
-type CellRule interface {
-	Apply(current state.CellState, neighbours int) state.CellState
-}
-
-func NewBasic() CellRule {
+func NewBasic() state.CellRule {
 	return RuleSet{
 		underpop,
 		overpop,
@@ -24,8 +20,6 @@ func (rs RuleSet) Apply(current state.CellState, neighbours int) state.CellState
 
 	return next
 }
-
-type CellRuleFunc func(current state.CellState, neighbours int) state.CellState
 
 func underpop(current state.CellState, neighbours int) state.CellState {
 	if neighbours < 2 {
