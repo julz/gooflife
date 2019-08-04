@@ -2,22 +2,51 @@ package rules
 
 import "github.com/julz/gooflife/state"
 
-type RuleSet []Rule
+type RuleSet []CellRuleFunc
 
-type Rule interface {
-	Apply(previous state.State) state.State
+type CellRule interface {
+	Apply(current state.CellState, neighbours int) state.CellState
 }
 
-type InvertRule struct{}
+func NewBasic() CellRule {
+	return RuleSet{
+		underpop,
+		overpop,
+		resurrect,
+	}
+}
 
-func (InvertRule) Apply(previous state.State) state.State {
-	result := make(state.State, len(previous))
-	for r, row := range previous {
-		result[r] = make([]state.CellState, len(row))
-		for c, cell := range row {
-			result[r][c] = !cell
-		}
+func (rs RuleSet) Apply(current state.CellState, neighbours int) state.CellState {
+	next := current
+	for _, rule := range rs {
+		next = rule(next, neighbours)
 	}
 
-	return result
+	return next
+}
+
+type CellRuleFunc func(current state.CellState, neighbours int) state.CellState
+
+func underpop(current state.CellState, neighbours int) state.CellState {
+	if neighbours < 2 {
+		return state.Dead
+	}
+
+	return current
+}
+
+func overpop(current state.CellState, neighbours int) state.CellState {
+	if neighbours > 3 {
+		return state.Dead
+	}
+
+	return current
+}
+
+func resurrect(current state.CellState, neighbours int) state.CellState {
+	if neighbours == 3 {
+		return state.Living
+	}
+
+	return current
 }

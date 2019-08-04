@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/julz/gooflife/rules"
 	"github.com/julz/gooflife/state"
 )
 
@@ -16,7 +15,7 @@ func main() {
 		log.Fatalf("parse input: %s", err)
 	}
 
-	game := rules.InvertRule{}
+	game := InvertRule{}
 
 	for {
 		s = game.Apply(s)
@@ -24,4 +23,18 @@ func main() {
 
 		time.Sleep(1 * time.Second)
 	}
+}
+
+type InvertRule struct{}
+
+func (InvertRule) Apply(previous state.State) state.State {
+	result := make(state.State, len(previous))
+	for r, row := range previous {
+		result[r] = make([]state.CellState, len(row))
+		for c, cell := range row {
+			result[r][c] = !cell
+		}
+	}
+
+	return result
 }
