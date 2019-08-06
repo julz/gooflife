@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"time"
 
 	"github.com/gosuri/uilive"
@@ -24,9 +25,13 @@ func main() {
 	defer writer.Stop()
 
 	for {
-		s = state.Apply(s, state.Neighbours(s), game)
-		fmt.Fprintln(writer, s)
+		next := state.Apply(s, state.Neighbours(s), game)
+		if reflect.DeepEqual(next, s) {
+			return
+		}
 
+		s = next
+		fmt.Fprintln(writer, s)
 		time.Sleep(1 * time.Second)
 	}
 }
