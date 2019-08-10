@@ -79,6 +79,14 @@ func TestParse(t *testing.T) {
 			},
 			Input: ".XX\nX.X",
 		},
+		{
+			Title: "empty rows at ends",
+			Expected: state.State{
+				{state.Dead, state.Living, state.Living},
+				{state.Living, state.Dead, state.Living},
+			},
+			Input: "\n.XX\nX.X\n",
+		},
 	}
 
 	for _, eg := range table {

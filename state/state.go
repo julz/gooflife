@@ -94,7 +94,7 @@ func Parse(in io.Reader) (State, error) {
 		return nil, err
 	}
 
-	lines := strings.Split(string(s), "\n")
+	lines := strings.Split(strings.Trim(string(s), "\n"), "\n")
 
 	state := make(State, len(lines))
 	for l, line := range lines {
