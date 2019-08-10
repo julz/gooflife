@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -8,11 +9,20 @@ import (
 	"time"
 
 	"github.com/gosuri/uilive"
+	"github.com/julz/gooflife/neighbours"
 	"github.com/julz/gooflife/rules"
 	"github.com/julz/gooflife/state"
 )
 
 func main() {
+	wrap := flag.Bool("wrap", false, "count neighbours as if the grid wraps around")
+	flag.Parse()
+
+	neighbourFunc := neighbours.WithoutWraparound
+	if *wrap {
+		neighbourFunc = neighbours.WithWraparound
+	}
+
 	s, err := state.Parse(os.Stdin)
 	if err != nil {
 		log.Fatalf("parse input: %s", err)
@@ -25,7 +35,7 @@ func main() {
 	defer writer.Stop()
 
 	for {
-		next := state.Apply(s, state.Neighbours(s), game)
+		next := state.Apply(s, neighbourFunc(s), game)
 		if reflect.DeepEqual(next, s) {
 			return
 		}

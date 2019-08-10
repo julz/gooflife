@@ -34,22 +34,6 @@ func TestApply(t *testing.T) {
 	}, next)
 }
 
-func TestNeighbours(t *testing.T) {
-	n := state.Neighbours(state.State{
-		{state.Living, state.Living, state.Dead, state.Living},
-		{state.Dead, state.Living, state.Dead, state.Living},
-		{state.Dead, state.Dead, state.Dead, state.Living},
-		{state.Dead, state.Living, state.Living, state.Dead},
-	})
-
-	assert.DeepEqual(t, n, [][]int{
-		{2, 2, 4, 1},
-		{3, 2, 5, 2},
-		{2, 3, 5, 2},
-		{1, 1, 2, 2},
-	})
-}
-
 func TestParse(t *testing.T) {
 	table := []struct {
 		Title    string

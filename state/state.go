@@ -39,53 +39,6 @@ func Apply(state State, neighbours [][]int, rule CellRule) State {
 	return next
 }
 
-// Neighbours returns the number of neighbours of each cell
-func Neighbours(state State) [][]int {
-	deltas := []struct {
-		R int
-		C int
-	}{
-		{-1, -1},
-		{-1, 0},
-		{-1, 1},
-		{0, -1},
-		{0, 1},
-		{1, -1},
-		{1, 0},
-		{1, 1},
-	}
-	result := make([][]int, len(state))
-	for r, row := range state {
-		result[r] = make([]int, len(row))
-		for c := range row {
-
-			n := 0
-			for _, d := range deltas {
-				if r+d.R < 0 {
-					continue
-				}
-				if r+d.R >= len(row) {
-					continue
-				}
-				if c+d.C < 0 {
-					continue
-				}
-				if c+d.C >= len(row) {
-					continue
-				}
-
-				if state[r+d.R][c+d.C] == Living {
-					n++
-				}
-			}
-
-			result[r][c] = n
-		}
-	}
-
-	return result
-}
-
 // Parse parses an input stream in format "..X..XX\n.XX.XX" where . is a dead cell,
 // and X is a live cell. Newlines separate rows.
 func Parse(in io.Reader) (State, error) {
