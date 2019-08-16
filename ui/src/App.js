@@ -38,9 +38,10 @@ const Grid = ({data, allowEdits, setData}) => {
     }}>
     {
       data.flatMap( (row, r) => (row.map((_, c) => <div
-        onClick={() => toggle(r,c)}
+        onClick={() => allowEdits && toggle(r,c)}
         style={{
           backgroundColor: data[r][c] ? "red" : "white",
+          cursor: allowEdits ? "pointer" : "cursor",
         }}></div>)) )
     }</div>
   )
