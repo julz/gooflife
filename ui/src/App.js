@@ -34,6 +34,7 @@ const Grid = ({data, allowEdits, setData}) => {
       background: "#eee",
       gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
       gridAutoRows: "1fr",
+      gridGap: 1,
     }}>
     {
       data.flatMap( (row, r) => (row.map((_, c) => <div
