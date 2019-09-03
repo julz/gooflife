@@ -14,6 +14,9 @@ echo '
 .........' | go run cmd/gooflife-cli/main.go -wrap
 ~~~~
 
+
+![example](doc/demo.gif)
+
 ## Supported Flags
 
  - *-wrap*: causes the grid to wrap around when counting neighbours
